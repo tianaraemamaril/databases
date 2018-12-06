@@ -5,12 +5,10 @@ var mysql = require('mysql');
 // and to the database "chat".
 
 
-var connection - mysql.createConnection({
+var connection = mysql.createConnection({
   host: 'localhost',
   user: 'student',
-  password: 'student',
-  port: 3000,
-  database: 'chat'
+  password: 'student'
 });
 
 connection.connect(function(err) {
@@ -18,7 +16,9 @@ connection.connect(function(err) {
     console.error('error connecting!');
     return
   }
-  
   console.log('connected as id ' + connection.threadId)
 })
 
+
+
+module.exports = connection
