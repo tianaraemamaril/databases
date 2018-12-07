@@ -88,4 +88,49 @@ describe('Persistent Node Chat Server', function() {
       });
     });
   });
+  
+  it('Should save multiple rows from a given table', function(done) {
+    
+    var queryArgs = [
+      ['Angela', 'Do not forget your database!', '3rd Floor'],
+    
+      ['Mike', 'Get a good amount of sleep!', 'Galvanize Room']
+    ];
+    
+    
+    dbConnection.query("INSERT INTO messages (username, text, roomname) VALUES ?", [queryArgs], function(err) {
+      if (err) {
+        throw err;
+      }
+      
+      request('http://127.0.0.1:3000/classes/messages', function(error, response, body) {
+        var messageLog = JSON.parse(body);
+        expect(messageLog.length).to.equal(2)
+        done();
+      })
+    })
+    
+    
+    
+    
+    
+    // request ('http://127.0.0.1:3000/classes/messages', function(error, response, body) {
+      
+    //   var messageArray = JSON.parse(body);
+    //   expect(messageArray)
+    // })
+  })
+  
 });
+
+
+
+
+
+
+
+
+
+
+
+
