@@ -13,25 +13,14 @@ CREATE TABLE username (
   PRIMARY KEY (usernameID)
 );
 
-CREATE TABLE roomname (
-  roomname varchar(255),
-  roomnameID int NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (roomnameID)
-);
 
 CREATE TABLE messages (
   /* Describe your table here.*/
-  createdAt DATETIME,
   objectID int NOT NULL AUTO_INCREMENT,
   roomname varchar(255),
   text varchar(255),
-  updatedAt DATETIME,
   username varchar(255),
-  usernameID int,
-  roomnameID int,
-  PRIMARY KEY (objectID),
-  FOREIGN KEY (usernameID) REFERENCES username(usernameID),
-  FOREIGN KEY (roomnameID) REFERENCES roomname(roomnameID)
+  PRIMARY KEY (objectID)
 );
 
 /*  Execute this file from the command line by typing:

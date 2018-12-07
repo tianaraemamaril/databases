@@ -16,7 +16,7 @@ describe('Persistent Node Chat Server', function() {
     });
     dbConnection.connect();
 
-       var tablename = "messages"; // TODO: fill this out
+       var tablename = "username"; //############## WE CHANGED THIS TO MESSAGES. --> how do we dynamically test all tablenames?
 
     /* Empty the db table before each test so that multiple tests
      * (or repeated runs of the tests) won't screw each other up: */
@@ -52,7 +52,7 @@ describe('Persistent Node Chat Server', function() {
         var queryString = 'SELECT * FROM messages';
         var queryArgs = [];
 
-        dbConnection.query(queryString, queryArgs, function(err, results) {
+        dbConnection.query(queryString, function(err, results) {
           // Should have one result:
           expect(results.length).to.equal(1);
 
