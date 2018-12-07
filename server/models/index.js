@@ -2,10 +2,23 @@ var db = require('../db');
 //modifies database
 module.exports = {
   messages: {
-    get: function () {}, // a function which produces all the messages
+    get: function (data, callback) {
+      db.query('SELECT * FROM messages;', (err, success) => {
+        if (err) {
+          callback(err)
+        } else {
+          callback(null, success)
+        }
+      })
+    }, // a function which produces all the messages
+    
+    
+    
+    
+    
     post: function (data, callback) {
-      console.log(data, 'this is DATA FROM MODELS')
-      db.query(`INSERT INTO messages (username, text, roomname) VALUES ('${data.username}', "${data.message}", '${data.roomname}')`, (err, success) => {
+      // console.log( 'this is DATA FROM MODELS', data)
+      db.query(`INSERT INTO messages (username, text, roomname) VALUES ('${data.username}', "${data.message}", '${data.roomname}');`, (err, success) => {
         if (err) {
           callback(err);
         } else {
@@ -23,13 +36,23 @@ module.exports = {
 
   users: {   
     // Ditto as above.
-    get: function () {},
+    get: function (data, callback) {
+      db.query('SELECT * FROM username;', (err, success) => {
+        if (err) {
+          callback(err);
+        } else {
+          callback(null, success)
+        }
+      })
+      
+    },
     
     
     
     post: function (data, callback) {
       // console.log(data, "this is data from models module")
-      db.query(`INSERT INTO username (username) VALUES ('${data.username}')`, (err, success) => {
+      db.query(`INSERT INTO username (username) VALUES ('${data.username}');`, (err, success) => {
+        console.log(err, 'ERRRR', success, 'SUCCESSSS')
         if (err) {
           callback(err);
       } else {
