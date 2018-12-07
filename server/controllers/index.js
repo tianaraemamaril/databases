@@ -8,7 +8,7 @@ module.exports = {
       if (err) {
         res.send(err);
       } else {
-        res.send(success)
+        res.send(success) //success here is the entire message; sent back to client since this is a GET request
       }
     })
   }, // a function which handles a get request for all messages
