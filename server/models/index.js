@@ -2,11 +2,13 @@ var db = require('../db');
 //modifies database
 module.exports = {
   messages: {
-    get: function (data, callback) {
+    get: function (callback) {
       db.query('SELECT * FROM messages;', (err, success) => {
+
         if (err) {
           callback(err)
         } else {
+          console.log(success, 'data from the model.messages')
           callback(null, success)
         }
       })
@@ -52,7 +54,7 @@ module.exports = {
     post: function (data, callback) {
       // console.log(data, "this is data from models module")
       db.query(`INSERT INTO username (username) VALUES ('${data.username}');`, (err, success) => {
-        console.log(err, 'ERRRR', success, 'SUCCESSSS')
+        // console.log(err, 'ERRRR USER', success, 'SUCCESSSS USER')
         if (err) {
           callback(err);
       } else {

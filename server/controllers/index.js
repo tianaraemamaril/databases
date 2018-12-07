@@ -3,23 +3,24 @@ var models = require('../models');
 module.exports = {
   messages: {
     get: function (req, res) {
-      models.messages.get(req.body, (err, success) => {
+      // console.log(req, 'req.body FROM CONTROLLER')
+      models.messages.get((err, success) => {
       if (err) {
         res.send(err);
       } else {
-        res.send('success')
+        res.send(success)
       }
     })
   }, // a function which handles a get request for all messages
     
     post: function (req, res) {
-    console.log('this is CONTROLLERS MESSAGES', req.body)
+    // console.log('this is CONTROLLERS MESSAGES', req.body)
 
       models.messages.post(req.body, (err, success) => {
         if (err) {
           res.send(err);
         } else {
-          res.send('success');
+          res.send('your post was successful!');
         }
       })
     }
@@ -44,11 +45,12 @@ module.exports = {
   users: {
     // Ditto as above
     get: function (req, res) {
+      // console.log(req.body, 'GET CONTROLERRRRRRRRRR')
       models.users.get(req.body, (err, success) => {
         if (err) {
           res.send(err)
         } else {
-          res.send('success')
+          res.send(success)
         }
       })
     },
@@ -61,7 +63,7 @@ module.exports = {
         if (err) {
           res.send(err);
         } else {
-          res.send('success')  
+          res.send('your post was successful!')  
         }
        });
     }
