@@ -30,18 +30,17 @@ module.exports = {
     
     post: function (data, callback) {
       // create all messages
-     
-    //since models/db.query takes a second param [], in controller get data in req.body in key/value pairs 
-    // var param = [req.body.roomname, req.body[roomname], req.body[text], req.body[username]]
-     db.query(`INSERT INTO messages (roomname, text, username) VALUES (${data.roomname}, ${data.text}, ${data.username})`, (err, success) => {
-      // console.log(data, "THIS IS DATA FROM MSG MODELS POST")
+      //since models/db.query takes a second param [], in controller get data in req.body in key/value pairs 
+      // var param = [req.body.roomname, req.body[roomname], req.body[text], req.body[username]]
+      db.query(`INSERT INTO messages (roomname, text, username) VALUES ("${data.roomname}", "${data.message}",
+        "${data.username}")`, (err, success) => {
+          // the client passes the username, so you will need to query the DB to fetch the user's ID to insert into messages
       if (err) {
         callback(err);
       } else {
         callback(null, 'SUCCESS!');
       }
      })
-      // 
     } 
   },
   
@@ -53,12 +52,10 @@ module.exports = {
     // Ditto as above.
     //db.query takes a queryString sql syntax and callback
     get: function (callback) {
-      db.query( `SELECT * FROM username;`, (err, data) => {
+      db.query(`SELECT * FROM users;`, (err, data) => {
         if (err) {
           callback(err);
         } else {
-      console.log( 'this is SUCCESS FROM MODELS users GET', data)
-      console.log( 'this is ERRRR FROM MODELS users GET', err)
           callback(null, data); //pass null in as first args when no err
         }
       })
@@ -68,9 +65,8 @@ module.exports = {
     post: function (data, callback) {
       //can create var param to use for passing in as second args
       //first args can be var queryString = `INSERT INTO username (username) VALUES (?);`
-      db.query(`INSERT INTO username (username) VALUES (${data.username});`, (err, success) => {
+      db.query(`INSERT INTO users (username) VALUES ("${data.username}");`, (err, success) => {
         // console.log(data, "THIS IS DATA FROM USER MODELS POST")
-
         if (err) {
           callback(err);
         } else {

@@ -55,6 +55,10 @@ describe('Persistent Node Chat Server', function() {
         dbConnection.query(queryString, function(err, results) {
           // Should have one result:
           expect(results.length).to.equal(1);
+          //result should be 1
+          //result.length should equal to 1
+          //result is result of running select allf rom messages table
+          //
 
           // TODO: If you don't have a column named text, change this test.
           expect(results[0].text).to.equal('In mercy\'s name, three days is all I need.');

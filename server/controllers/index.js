@@ -16,9 +16,8 @@ module.exports = {
     
     
     post: function (req, res) {
-    // console.log('this is CONTROLLERS MESSAGES', req.body)
-    
       models.messages.post(req.body, (err, success) => {
+      console.log('ERROR', err)
         if (err) {
           res.send(err);
         } else {
@@ -53,7 +52,6 @@ module.exports = {
     post: function (req, res) { 
       // console.log('this is CONTROLLERS USERS', req.body)
       models.users.post(req.body.username, (err, success) => {
-        console.log('this is REQBod from USERS POST CONTROLL', req.body) 
         if (err) {
           res.send(err);
         } else {
