@@ -14,11 +14,11 @@ module.exports = {
     get: function (callback) {
       db.query('SELECT * FROM messages \
         left outer join users on (messages.userId = users.id) \
-        order by messages.id desc', (err, success) => {
+        order by messages.id desc', (err, messages) => {
           if (err) {
             callback(err);
           } else {
-            callback(null, success);
+            callback(null, messages);
           }
         });
     }, 
@@ -30,26 +30,29 @@ module.exports = {
     
     
     post: function (data, callback) {
-      // create all messages
+      // create one message
       //since models/db.query takes a second param [], in controller get data in req.body in key/value pairs 
       // var param = [req.body.roomname, req.body[roomname], req.body[text], req.body[username]]
       
-      console.log(data, "<<<<<<<<<<<<<<<DATA");
-      // make a query to get id from the users table, pass the second query in as a callback
-      
-      let secondQuery = db.query(`INSERT INTO messages (roomname, text, userId) VALUES ("${data.roomname}", "${data.message}",
-        "${data.userId}")`, (err, success) => {
-        // the client passes the username, so you will need to query the DB to fetch the user's ID to insert into messages
-        console.log('>>>>>>>> error is ', err);
-        console.log('>>>>>>>>>success is ', success);
+      console.log(data, "<<<<<<<<<<<<<<<DATA"); 
+      // make a query to get id from the users table based on uesrname, pass userIds to 
+      //first query's callback to be used as userIDs for INSERT
+      // userId looks like this -> [ {id: 1 }] 
+      db.query(`SELECT id FROM users where username = "${data.username}"`, (err, userIds) => {
         if (err) {
           callback(err);
-        } else {
-          callback(null, 'SUCCESS!');
+          return;
         }
+        
+        db.query(`INSERT INTO messages (roomname, text, userId) VALUES ("${data.roomname}", "${data.message}",
+          ${userIds[0].id})`, (err, success) => {
+          if (err) {
+            callback(err);
+          } else {
+            callback(null, 'SUCCESS!');
+          }
+        });
       });
-      
-      db.query('SELECT id FROM users', secondQuery);
     } 
   },
   
@@ -70,12 +73,11 @@ module.exports = {
       });
     },
     
-    
+    //{username:xcxx}
     post: function (data, callback) {
       //can create var param to use for passing in as second args
       //first args can be var queryString = `INSERT INTO username (username) VALUES (?);`
       db.query(`INSERT INTO users (username) VALUES ("${data.username}");`, (err, success) => {
-        // console.log(data, "THIS IS DATA FROM USER MODELS POST")
         if (err) {
           callback(err);
         } else {

@@ -73,7 +73,7 @@ describe('Persistent Node Chat Server', function() {
 
   it('Should output all messages from the DB', function(done) {
     // Let's insert a message into the db
-    var queryString = "INSERT INTO messages (username, text, roomname) VALUES ('bob', 'Men like you can never change!', 'main');";
+    var queryString = "INSERT INTO messages (userId, text, roomname) VALUES (1, 'Men like you can never change!', 'main');";
 
     // var queryString = "INSERT INTO messages (username, text, roomname) VALUES ('bob', 'Men like you can never change!', 'main');";
     var queryArgs = [];
@@ -102,13 +102,13 @@ describe('Persistent Node Chat Server', function() {
   it('Should save multiple rows from a given table', function(done) {
     
     var queryArgs = [
-      ['Angela', 'Do not forget your database!', '3rd Floor'],
+      [1, 'Do not forget your database!', '3rd Floor'],
     
-      ['Mike', 'Get a good amount of sleep!', 'Galvanize Room']
+      [2, 'Get a good amount of sleep!', 'Galvanize Room']
     ];
     
-    
-    dbConnection.query("INSERT INTO messages (username, text, roomname) VALUES ?", [queryArgs], function(err) {
+    //changed username to userId
+    dbConnection.query("INSERT INTO messages (userId, text, roomname) VALUES ?", [queryArgs], function(err) {
       if (err) {
         throw err;
       }
