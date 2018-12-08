@@ -79,7 +79,7 @@ describe('Persistent Node Chat Server', function() {
       // Now query the Node chat server and see if it returns
       // the message we just inserted:
       request('http://127.0.0.1:3000/classes/messages', function(error, response, body) {
-        console.log(body, 'BODY FROM TEST')
+        // console.log(body, 'BODY FROM TEST')
         
         var messageLog = JSON.parse(body);
         expect(messageLog[0].text).to.equal('Men like you can never change!');
@@ -89,6 +89,7 @@ describe('Persistent Node Chat Server', function() {
     });
   });
   
+  /*
   it('Should save multiple rows from a given table', function(done) {
     
     var queryArgs = [
@@ -120,7 +121,7 @@ describe('Persistent Node Chat Server', function() {
     //   expect(messageArray)
     // })
   })
-  
+  */
 });
 
 
