@@ -2,9 +2,9 @@ var db = require('../db');
 //modifies database
 
 //db.query(queryString, param, callback)
-  //queryString -> sql syntax
-  //[req.body]
-  //callback(err, success)
+//queryString -> sql syntax
+//[req.body]
+//callback(err, success)
 
 
 
@@ -12,18 +12,19 @@ module.exports = {
   messages: { 
   // fetch all messages
     get: function (callback) {
-      db.query(`SELECT * FROM messages;`, (err, success) => {
-        if (err) {
-          callback(err);
-        } else {
-          callback(null, success);
-        }
-      });
-  
+      db.query('SELECT * FROM messages \
+        left outer join users on (messages.userId = users.id) \
+        order by messages.id desc', (err, success) => {
+          if (err) {
+            callback(err);
+          } else {
+            callback(null, success);
+          }
+        });
     }, 
     //need to get 4 components id, text, roomname, username from messages, but users are in a different table and is related through user ID -> need to join table
     //use "left outer join" since it's a loose join
-    //`SELECT messages.id messages.text messages.roomname from messages \
+    //`SELECT messages.id, messages.roomname, messages.text, messages.userId FROM messages \
     // left outer join messages.userId = users.id \
     //order by messages.id desc`
     
@@ -32,15 +33,23 @@ module.exports = {
       // create all messages
       //since models/db.query takes a second param [], in controller get data in req.body in key/value pairs 
       // var param = [req.body.roomname, req.body[roomname], req.body[text], req.body[username]]
-      db.query(`INSERT INTO messages (roomname, text, username) VALUES ("${data.roomname}", "${data.message}",
-        "${data.username}")`, (err, success) => {
-          // the client passes the username, so you will need to query the DB to fetch the user's ID to insert into messages
-      if (err) {
-        callback(err);
-      } else {
-        callback(null, 'SUCCESS!');
-      }
-     })
+      
+      console.log(data, "<<<<<<<<<<<<<<<DATA");
+      // make a query to get id from the users table, pass the second query in as a callback
+      
+      let secondQuery = db.query(`INSERT INTO messages (roomname, text, userId) VALUES ("${data.roomname}", "${data.message}",
+        "${data.userId}")`, (err, success) => {
+        // the client passes the username, so you will need to query the DB to fetch the user's ID to insert into messages
+        console.log('>>>>>>>> error is ', err);
+        console.log('>>>>>>>>>success is ', success);
+        if (err) {
+          callback(err);
+        } else {
+          callback(null, 'SUCCESS!');
+        }
+      });
+      
+      db.query('SELECT id FROM users', secondQuery);
     } 
   },
   
@@ -58,7 +67,7 @@ module.exports = {
         } else {
           callback(null, data); //pass null in as first args when no err
         }
-      })
+      });
     },
     
     
@@ -72,11 +81,11 @@ module.exports = {
         } else {
           callback(null, 'SUCCESS!');
         }
-      })
+      });
       
     }
   }
-}
+};
 
 
 

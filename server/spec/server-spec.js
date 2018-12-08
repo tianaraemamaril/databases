@@ -16,7 +16,7 @@ describe('Persistent Node Chat Server', function() {
     });
     dbConnection.connect();
 
-       var tablename = "messages"; //############## WE CHANGED THIS TO MESSAGES. --> how do we dynamically test all tablenames?
+    var tablename = "messages"; //############## WE CHANGED THIS TO MESSAGES. --> how do we dynamically test all tablenames?
 
     /* Empty the db table before each test so that multiple tests
      * (or repeated runs of the tests) won't screw each other up: */
@@ -33,7 +33,8 @@ describe('Persistent Node Chat Server', function() {
       method: 'POST',
       uri: 'http://127.0.0.1:3000/classes/users',
       json: { username: 'Valjean' }
-    }, function () {
+    }, function (data) {
+      console.log("POST USER DATA!!!!", data);
       // Post a message to the node chat server:
       request({
         method: 'POST',
@@ -44,6 +45,7 @@ describe('Persistent Node Chat Server', function() {
           roomname: 'Hello'
         }
       }, function () {
+        console.log('This bit works, too!!');
         // Now if we look in the database, we should find the
         // posted message there.
 
@@ -71,8 +73,10 @@ describe('Persistent Node Chat Server', function() {
 
   it('Should output all messages from the DB', function(done) {
     // Let's insert a message into the db
-       var queryString = "INSERT INTO messages (username, text, roomname) VALUES ('bob', 'Men like you can never change!', 'main');"
-       var queryArgs = [];
+    var queryString = "INSERT INTO messages (username, text, roomname) VALUES ('bob', 'Men like you can never change!', 'main');";
+
+    // var queryString = "INSERT INTO messages (username, text, roomname) VALUES ('bob', 'Men like you can never change!', 'main');";
+    var queryArgs = [];
     // TODO - The exact query string and query args to use
     // here depend on the schema you design, so I'll leave
     // them up to you. */
@@ -86,6 +90,7 @@ describe('Persistent Node Chat Server', function() {
         // console.log(body, 'BODY FROM TEST')
         
         var messageLog = JSON.parse(body);
+        console.log('>>>>>>>>>>>>>>>>', messageLog, "MESSASGELOGGGG");
         expect(messageLog[0].text).to.equal('Men like you can never change!');
         expect(messageLog[0].roomname).to.equal('main');
         done();
@@ -93,7 +98,7 @@ describe('Persistent Node Chat Server', function() {
     });
   });
   
-  /*
+  
   it('Should save multiple rows from a given table', function(done) {
     
     var queryArgs = [
@@ -110,10 +115,10 @@ describe('Persistent Node Chat Server', function() {
       
       request('http://127.0.0.1:3000/classes/messages', function(error, response, body) {
         var messageLog = JSON.parse(body);
-        expect(messageLog.length).to.equal(2)
+        expect(messageLog.length).to.equal(2);
         done();
-      })
-    })
+      });
+    });
     
     
     
@@ -124,8 +129,8 @@ describe('Persistent Node Chat Server', function() {
     //   var messageArray = JSON.parse(body);
     //   expect(messageArray)
     // })
-  })
-  */
+  });
+  
 });
 
 

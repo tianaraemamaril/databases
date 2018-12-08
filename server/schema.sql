@@ -18,11 +18,12 @@ CREATE TABLE messages (
   id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
   roomname varchar(255) NOT NULL,
   text varchar(255) NOT NULL,
-  username varchar(255) NOT NULL
+  userId int NOT NULL,
+  FOREIGN KEY (userId) REFERENCES users(id)
 );
 
 /*  Execute this file from the command line by typing:
- *    mysql -u root < server/schema.sql
+ *    mysql -u student < server/schema.sql
  *  to create the database and the tables.
 
 SELECT m.roomname, m.text, u.username FROM messages m OUTER JOIN users u on m.user_id=u.id;
